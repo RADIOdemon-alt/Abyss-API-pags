@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Abyss-api</title>
+  <title>Dark-api</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,64 +17,64 @@
 
   <div class="container">
 
-    <!-- رسائل الخطأ/النجاح -->
+    <!-- Error/Success Messages -->
     <div id="message-box" class="message-box hidden"></div>
 
-    <!-- الترحيب -->
+    <!-- Welcome Message -->
     <div id="welcome-box" class="welcome-box hidden"></div>
 
-    <!-- تسجيل الدخول -->
+    <!-- Login Form -->
     <div class="form-box" id="login-box">
       <div class="card-avatar">
         <img src="https://files.catbox.moe/caohoh.jpg" alt="Avatar">
       </div>
-      <h2>تسجيل الدخول</h2>
+      <h2>Login</h2>
       <div class="input-group">
         <i class="fa-solid fa-envelope"></i>
-        <input type="email" id="login-email" placeholder="البريد الإلكتروني" required>
+        <input type="email" id="login-email" placeholder="Email" required>
       </div>
       <div class="input-group">
         <i class="fa-solid fa-lock"></i>
-        <input type="password" id="login-password" placeholder="كلمة المرور" required>
+        <input type="password" id="login-password" placeholder="Password" required>
       </div>
-      <button type="button" onclick="login()">دخول</button>
-      <p>ليس لديك حساب؟
-        <a href="javascript:void(0)" onclick="toggleForms()">سجّل الآن</a>
+      <button type="button" onclick="login()">Login</button>
+      <p>Don't have an account?
+        <a href="javascript:void(0)" onclick="toggleForms()">Sign up now</a>
       </p>
     </div>
 
-    <!-- تسجيل جديد -->
+    <!-- Register Form -->
     <div class="form-box hidden" id="register-box">
       <div class="card-avatar">
         <img src="assets/media/logo.png" alt="Avatar">
       </div>
-      <h2>إنشاء حساب</h2>
+      <h2>Create Account</h2>
       <div class="input-group">
         <i class="fa-solid fa-user"></i>
-        <input type="text" id="reg-name" placeholder="الاسم الكامل" required>
+        <input type="text" id="reg-name" placeholder="Full Name" required>
       </div>
       <div class="input-group">
         <i class="fa-solid fa-flag"></i>
         <div class="custom-select" id="country-select">
-          <div class="selected">اختر الدولة</div>
+          <div class="selected">Select Country</div>
           <ul class="options hidden" id="country-options"></ul>
         </div>
       </div>
       <div class="input-group">
         <i class="fa-solid fa-phone"></i>
-        <input type="text" id="reg-phone" placeholder="رقم الهاتف" required>
+        <input type="text" id="reg-phone" placeholder="Phone Number" required>
       </div>
       <div class="input-group">
         <i class="fa-solid fa-envelope"></i>
-        <input type="email" id="reg-email" placeholder="البريد الإلكتروني" required>
+        <input type="email" id="reg-email" placeholder="Email" required>
       </div>
       <div class="input-group">
         <i class="fa-solid fa-lock"></i>
-        <input type="password" id="reg-password" placeholder="كلمة المرور" required>
+        <input type="password" id="reg-password" placeholder="Password" required>
       </div>
-      <button type="button" onclick="register()">تسجيل</button>
-      <p>هل لديك حساب بالفعل؟
-        <a href="javascript:void(0)" onclick="toggleForms()">سجّل دخول</a>
+      <button type="button" onclick="register()">Register</button>
+      <p>Already have an account?
+        <a href="javascript:void(0)" onclick="toggleForms()">Login</a>
       </p>
     </div>
   </div>
