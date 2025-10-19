@@ -1,150 +1,69 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+const API_URL = "https://dark-api-x.vercel.app/api/firebase"; // مسار الروتز
+  const API_KEY = "drk_iARHZmYf0ODK8m3WuDmKl0K9nHSMQZ35Zkwa"; // API Key
 
-// إعدادات Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyCBTPlQVGgqL1MmDuZRSJMlS244AtAzZ6E",
-  authDomain: "web-zone-c95aa.firebaseapp.com",
-  projectId: "web-zone-c95aa",
-  storageBucket: "web-zone-c95aa.firebasestorage.app",
-  messagingSenderId: "776469157795",
-  appId: "1:776469157795:web:d69518695895cff22e2c16",
-  measurementId: "G-9NLEWJYZ6J"
-};
+  // ======= الرسائل =======
+  function showMessage(msg, type="error") {
+    const messageBox = document.getElementById("message-box");
+    const loginBox = document.getElementById("login-box");
+    const registerBox = document.getElementById("register-box");
+    messageBox.textContent = msg;
+    messageBox.className = type==="error" ? "message-box error" : "message-box success";
+    messageBox.style.display = "block";
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+    loginBox.style.visibility = "hidden";
+    registerBox.style.visibility = "hidden";
 
-// توليد ID عشوائي
-function generateId() {
-  return Math.floor(1000000000 + Math.random() * 9000000000).toString();
-}
-
-// الرسائل
-function showMessage(msg, type="error") {
-  const messageBox = document.getElementById("message-box");
-  const loginBox = document.getElementById("login-box");
-  const registerBox = document.getElementById("register-box");
-  messageBox.textContent = msg;
-  messageBox.className = type==="error" ? "message-box error" : "message-box success";
-  messageBox.style.display = "block";
-
-  loginBox.style.visibility = "hidden";
-  registerBox.style.visibility = "hidden";
-
-  setTimeout(()=>{
-    messageBox.style.display = "none";
-    loginBox.style.visibility = "visible";
-    registerBox.style.visibility = "visible";
-  }, 3000);
-}
-
-// الترحيب
-function showWelcome(msg) {
-  const welcomeBox = document.getElementById("welcome-box");
-  welcomeBox.textContent = msg;
-  welcomeBox.style.display = "block";
-}
-
-// التبديل بين الكاردين
-window.toggleForms = function() {
-  const loginBox = document.getElementById("login-box");
-  const registerBox = document.getElementById("register-box");
-  loginBox.classList.toggle("hidden");
-  registerBox.classList.toggle("hidden");
-};
-
-// تسجيل جديد
-window.register = async function() {
-  const name = document.getElementById("reg-name").value;
-  const phone = document.getElementById("reg-phone").value;
-  const email = document.getElementById("reg-email").value;
-  const password = document.getElementById("reg-password").value;
-
-  // الدول
-  const selected = document.getElementById("reg-phone");
-  const countryName = selected.dataset.name;
-  const countryCode = selected.dataset.code;
-  const countryFlag = selected.dataset.flag;
-
-  if(!name || !phone || !email || !password || !countryName){
-    showMessage("❌ الرجاء تعبئة جميع الحقول واختيار الدولة", "error");
-    return;
-  }
-
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-
-    await setDoc(doc(db, "users", user.uid), {
-      id: generateId(),
-      name: name,
-      country: countryName,
-      countryCode: countryCode,
-      countryFlag: countryFlag,
-      phone: phone,
-      email: email,
-      role: "user"
-    });
-
-    showMessage("✅ تم التسجيل بنجاح!", "success");
-    toggleForms();
-
-  } catch (error) {
-    let msg = "❌ خطأ غير معروف";
-    if(error.code==="auth/email-already-in-use") msg="❌ البريد الإلكتروني مستخدم مسبقًا";
-    else if(error.code==="auth/invalid-email") msg="❌ البريد الإلكتروني غير صالح";
-    else if(error.code==="auth/weak-password") msg="❌ كلمة المرور ضعيفة";
-    showMessage(msg, "error");
-    console.error(error);
-  }
-};
-
-// تسجيل دخول
-window.login = async function() {
-  const email = document.getElementById("login-email").value;
-  const password = document.getElementById("login-password").value;
-
-  if(!email || !password){
-    showMessage("❌ الرجاء إدخال البريد الإلكتروني وكلمة المرور", "error");
-    return;
-  }
-
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    showWelcome(`🎉 مرحبًا بك!`);
     setTimeout(()=>{
-      window.location.href = "assets/page/home/index.html";
-    }, 1500);
-  } catch(error) {
-    let msg = "❌ البريد أو كلمة المرور غير صحيحة";
-    showMessage(msg, "error");
-    console.error(error);
+      messageBox.style.display = "none";
+      loginBox.style.visibility = "visible";
+      registerBox.style.visibility = "visible";
+    }, 3000);
   }
-};
 
-// ======= Discord style اختيار الدول =======
-const countrySelect = document.getElementById("country-select");
-const selectedDiv = countrySelect.querySelector(".selected");
-const optionsList = document.getElementById("country-options");
-const phoneInput = document.getElementById("reg-phone");
+  // ======= التبديل بين الكاردين =======
+  function toggleForms() {
+    const loginBox = document.getElementById("login-box");
+    const registerBox = document.getElementById("register-box");
+    loginBox.classList.toggle("hidden");
+    registerBox.classList.toggle("hidden");
+  }
 
-let countriesList = [];
+  // ======= قائمة الدول =======
+  const countriesList = [
+    { "name": "مصر", "code": "20", "flag": "🇪🇬" },
+    { "name": "السعودية", "code": "966", "flag": "🇸🇦" },
+    { "name": "الإمارات", "code": "971", "flag": "🇦🇪" },
+    { "name": "الكويت", "code": "965", "flag": "🇰🇼" },
+    { "name": "قطر", "code": "974", "flag": "🇶🇦" },
+    { "name": "البحرين", "code": "973", "flag": "🇧🇭" },
+    { "name": "عمان", "code": "968", "flag": "🇴🇲" },
+    { "name": "اليمن", "code": "967", "flag": "🇾🇪" },
+    { "name": "العراق", "code": "964", "flag": "🇮🇶" },
+    { "name": "الأردن", "code": "962", "flag": "🇯🇴" },
+    { "name": "لبنان", "code": "961", "flag": "🇱🇧" },
+    { "name": "سوريا", "code": "963", "flag": "🇸🇾" },
+    { "name": "فلسطين", "code": "970", "flag": "🇵🇸" },
+    { "name": "ليبيا", "code": "218", "flag": "🇱🇾" },
+    { "name": "تونس", "code": "216", "flag": "🇹🇳" },
+    { "name": "الجزائر", "code": "213", "flag": "🇩🇿" },
+    { "name": "المغرب", "code": "212", "flag": "🇲🇦" },
+    { "name": "موريتانيا", "code": "222", "flag": "🇲🇷" },
+    { "name": "السودان", "code": "249", "flag": "🇸🇩" },
+    { "name": "جيبوتي", "code": "253", "flag": "🇩🇯" },
+    { "name": "الصومال", "code": "252", "flag": "🇸🇴" },
+    { "name": "جزر القمر", "code": "269", "flag": "🇰🇲" }
+  ];
 
-async function loadCountries() {
-  try {
-    const res = await fetch("assets/Settings/countries.json");
-    const countries = await res.json();
-    countries.sort((a,b)=>a.name.localeCompare(b.name));
-    countriesList = countries;
+  const countrySelect = document.getElementById("country-select");
+  const selectedDiv = countrySelect.querySelector(".selected");
+  const optionsList = document.getElementById("country-options");
+  const phoneInput = document.getElementById("reg-phone");
 
-    // ملء قائمة options
+  function populateCountries() {
+    countriesList.sort((a,b)=>a.name.localeCompare(b.name));
     optionsList.innerHTML = "";
-    countries.forEach(c => {
+    countriesList.forEach(c => {
       const li = document.createElement("li");
-      li.className = "option-item";
       li.dataset.name = c.name;
       li.dataset.code = c.code;
       li.dataset.flag = c.flag;
@@ -155,37 +74,132 @@ async function loadCountries() {
         phoneInput.dataset.name = c.name;
         phoneInput.dataset.code = c.code;
         phoneInput.dataset.flag = c.flag;
-
         optionsList.classList.add("hidden");
       });
       optionsList.appendChild(li);
     });
 
-    // قيمة افتراضية
-    if(countries.length > 0){
-      const first = countries[0];
+    if(countriesList.length > 0){
+      const first = countriesList[0];
       selectedDiv.textContent = `${first.flag} ${first.name}`;
       phoneInput.value = `+${first.code}`;
       phoneInput.dataset.name = first.name;
       phoneInput.dataset.code = first.code;
       phoneInput.dataset.flag = first.flag;
     }
-
-  } catch(err) {
-    console.error("فشل تحميل الدول", err);
   }
-}
+  populateCountries();
+  selectedDiv.addEventListener("click", () => optionsList.classList.toggle("hidden"));
+  document.addEventListener("click", (e) => { if(!countrySelect.contains(e.target)) optionsList.classList.add("hidden"); });
 
-loadCountries();
+  // ======= تسجيل جديد =======
+  async function register() {
+    const name = document.getElementById("reg-name").value.trim();
+    const phone = phoneInput.value.trim();
+    const email = document.getElementById("reg-email").value.trim();
+    const password = document.getElementById("reg-password").value.trim();
 
-// فتح/إغلاق القائمة عند الضغط على selected
-selectedDiv.addEventListener("click", () => {
-  optionsList.classList.toggle("hidden");
-});
+    const country = {
+      name: phoneInput.dataset.name || "",
+      code: phoneInput.dataset.code || "",
+      flag: phoneInput.dataset.flag || ""
+    };
 
-// إغلاق القائمة عند الضغط خارجها
-document.addEventListener("click", (e) => {
-  if(!countrySelect.contains(e.target)){
-    optionsList.classList.add("hidden");
+    if (!name || !phone || !email || !password) {
+      showMessage("❌ الرجاء تعبئة جميع الحقول", "error");
+      return;
+    }
+
+    const payload = { name, phone, email, password, country };
+
+    try {
+      const res = await fetch(`${API_URL}/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": API_KEY
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        showPopup(`Welcome ${name}!\nOn the dark API platform`, [
+          { title: "𝐑𝐀𝐃𝐈𝐎 𝐃𝐄𝐌𝐎𝐍", subtitle: "Developer" },
+          { title: "IZANA", subtitle: "Co-Developer" }
+        ]);
+        toggleForms();
+      } else {
+        showMessage(data.message, "error");
+      }
+
+    } catch (err) {
+      console.error(err);
+      showMessage("❌ حدث خطأ أثناء التسجيل", "error");
+    }
   }
-});
+
+  // ======= تسجيل دخول =======
+  async function login() {
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value.trim();
+
+    if (!email || !password) {
+      showMessage("❌ الرجاء إدخال البريد الإلكتروني وكلمة المرور", "error");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "x-api-key": API_KEY
+        },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showPopup(`Welcome ${data.userName || "User"}!\nOn the dark API platform`, [
+          { title: "𝐑𝐀𝐃𝐈𝐎 𝐃𝐄𝐌𝐎𝐍", subtitle: "Developer" },
+          { title: "IZANA", subtitle: "Co-Developer" }
+        ]);
+      } else {
+        showMessage(data.message || "❌ البريد أو كلمة المرور غير صحيحة", "error");
+      }
+    } catch (err) {
+      console.error(err);
+      showMessage("❌ حدث خطأ أثناء تسجيل الدخول", "error");
+    }
+  }
+
+  // ======= البوبيت =======
+  function showPopup(message, cards=[]) {
+    const loginBox = document.getElementById("login-box");
+    const registerBox = document.getElementById("register-box");
+    loginBox.classList.add("hide");
+    registerBox.classList.add("hide");
+
+    const popup = document.createElement("div");
+    popup.className = "popup-box";
+    popup.style.fontFamily = "'Cairo', sans-serif";
+    popup.innerHTML = `
+      <div class="popup-message">${message.replace(/\n/g,"<br>")}</div>
+      <div class="popup-cards">
+        ${cards.map(c => `<div class="card"><h3>${c.title}</h3><p>${c.subtitle}</p></div>`).join("")}
+      </div>
+    `;
+    document.body.appendChild(popup);
+    popup.style.animation = "fadeIn 0.5s ease";
+
+    // إزالة البوبيت بعد 5 ثواني والتحويل
+    setTimeout(() => {
+      popup.remove();
+      window.location.href = "https://dark-api-x.vercel.app/home/";
+    }, 5000);
+  }
+
+  window.toggleForms = toggleForms;
+  window.register = register;
+  window.login = login;
